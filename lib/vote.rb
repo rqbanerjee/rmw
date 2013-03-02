@@ -20,8 +20,6 @@ class Vote
     else
       raise "Could not open contestant file: #{contestant_filename}"
     end
-    require 'capybara-webkit'
-    Capybara.javascript_driver = :webkit if Capybara.drivers.has_key? :webkit
   end
 
   def process_file
