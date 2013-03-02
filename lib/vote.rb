@@ -53,9 +53,9 @@ class Vote
     sleep_time = 120 + rand(5)
     go_sleep(sleep_time)
     click_button('YES')
-    go_sleep 3
-    element = page.find('Thank you for voting')
-    puts "Element: #{element}"
+    #go_sleep 3
+    #element = page.find('Thank you for voting')
+    #puts "Element: #{element}"
   end
 
   def vote_x_times(x, anonymized = false)
