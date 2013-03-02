@@ -29,6 +29,7 @@ class Vote
     @contestant_name = yf['contestant']['name']
     @vote_url = yf['contestant']['vote_url']
     @video_url = yf['contestant']['video_url']
+    @anonymizer_url = yf['anonymizer']['url']
 
     Capybara.app_host = yf['contestant']['base_url']
     puts "Voting for #{@contestant_name} at #{@contestant_url}"
@@ -37,18 +38,35 @@ class Vote
   def vote_once
     puts "visiting #{@video_url}"
     visit(@video_url)
-    #dump
     sleep_time = 120 + rand(5)
     go_sleep(sleep_time)
-    dump
     click_button('YES')
     dump
   end
 
-  def vote_x_times(x)
+  def vote_anonymized
+    visit(@anonymizer_url)
+    fill_in('minime_url_textbox', :with => @video_url)
+    page.uncheck 'allowCookies'
+    page.uncheck 'stripJS'
+    click_button('Visit')
+    sleep_time = 120 + rand(5)
+    go_sleep(sleep_time)
+    click_button('YES')
+    go_sleep 3
+    element = page.find('Thank you for voting')
+    puts "Element: #{element}"
+  end
+
+  def vote_x_times(x, anonymized = false)
     puts "will vote #{x} times"
     for i in 0..x
-      vote_once
+      if anonymized
+        vote_anonymized
+      else
+        vote_once
+      end
+
     end
     puts "done voting #{i} times"
   end

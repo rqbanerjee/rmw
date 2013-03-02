@@ -22,14 +22,16 @@ program_desc 'votes on rmw'
 
 version Rmw::VERSION
 
+desc 'contestant file'
+default_value 'contestant.yml'
+arg_name 'contestant file'
+flag [:c,:contestant_file]
+
 desc 'use this command to vote'
 arg_name 'needs a contestant file'
 command :vote do |c|
-  c.desc 'contestant file'
-  c.default_value 'contestant.yml'
-  c.flag :c, :contestant_file
   c.action do |global_options,options,args|
-    v = Vote.new(options[:contestant_file])
+    v = Vote.new(global_options[:contestant_file])
     v.vote_once
   end
 end
@@ -37,17 +39,26 @@ end
 desc 'vote lots of times'
 arg_name 'needs a contestant file'
 command :vote_lots do |c|
-  c.desc 'contestant file'
-  c.default_value 'contestant.yml'
-  c.flag :c, :contestant_file
-
   c.desc 'times to vote'
-  c.default_value 15
+  c.default_value 150
   c.flag :t, :times_to_vote
 
+  c.desc 'anonymized or not'
+  c.default_value false
+  c.switch :a, :anonymized
+
   c.action do |global_options,options,args|
-    v = Vote.new(options[:contestant_file])
-    v.vote_x_times(options[:times_to_vote])
+    v = Vote.new(global_options[:contestant_file])
+    v.vote_x_times(options[:times_to_vote], options[:anonymized])
+  end
+end
+
+desc 'vote anonymous once'
+arg_name 'needs a contestant file'
+command :vote_anon do |c|
+  c.action do |global_options,options,args|
+    v = Vote.new(global_options[:contestant_file])
+    v.vote_anonymized
   end
 end
 
