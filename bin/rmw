@@ -14,20 +14,42 @@ $: << File.expand_path(File.dirname(File.realpath(__FILE__)) + '/../lib')
 require 'rubygems'
 require 'gli'
 require 'rmw_version'
+require 'vote'
 
 include GLI
 
-program_desc 'Describe your application here'
+program_desc 'votes on rmw'
 
 version Rmw::VERSION
 
-desc 'Describe some switch here'
-switch [:s,:switch]
+desc 'use this command to vote'
+arg_name 'needs a contestant file'
+command :vote do |c|
+  c.desc 'contestant file'
+  c.default_value 'contestant.yml'
+  c.flag :c, :contestant_file
+  c.action do |global_options,options,args|
+    v = Vote.new(options[:contestant_file])
+    v.vote_once
+  end
+end
 
-desc 'Describe some flag here'
-default_value 'the default'
-arg_name 'The name of the argument'
-flag [:f,:flagname]
+desc 'vote lots of times'
+arg_name 'needs a contestant file'
+command :vote_lots do |c|
+  c.desc 'contestant file'
+  c.default_value 'contestant.yml'
+  c.flag :c, :contestant_file
+
+  c.desc 'times to vote'
+  c.default_value 15
+  c.flag :t, :times_to_vote
+
+  c.action do |global_options,options,args|
+    v = Vote.new(options[:contestant_file])
+    v.vote_x_times(options[:times_to_vote])
+  end
+end
 
 pre do |global,command,options,args|
   # Pre logic here
