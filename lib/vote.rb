@@ -36,10 +36,9 @@ class Vote
   def vote_once
     puts "visiting #{@video_url}"
     visit(@video_url)
-    sleep_time = 120 + rand(5)
+    sleep_time = 125 + rand(5)
     go_sleep(sleep_time)
     click_button('YES')
-    dump
   end
 
   def vote_anonymized
@@ -48,23 +47,25 @@ class Vote
     page.uncheck 'allowCookies'
     page.uncheck 'stripJS'
     click_button('Visit')
-    sleep_time = 120 + rand(5)
+    sleep_time = 125 + rand(5)
     go_sleep(sleep_time)
     click_button('YES')
-    #go_sleep 3
-    #element = page.find('Thank you for voting')
-    #puts "Element: #{element}"
   end
 
   def vote_x_times(x, anonymized = false)
     puts "will vote #{x} times"
     for i in 0..x
-      if anonymized
-        vote_anonymized
-      else
-        vote_once
+      begin
+        if anonymized
+          vote_anonymized
+        else
+          vote_once
+        end
+      rescue Exception => e
+        puts e.message
+        #puts e.backtrace.inspect
+        puts "Failed to vote this time"
       end
-
     end
     puts "done voting #{i} times"
   end
