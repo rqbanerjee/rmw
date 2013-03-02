@@ -19,7 +19,6 @@ lib/rmw_version.rb
   s.rdoc_options << '--title' << 'rmw' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'rmw'
-  s.add_development_dependency('capybara-webkit')
   s.add_development_dependency('capybara')
   s.add_development_dependency('launchy')
   s.add_development_dependency('rake')
