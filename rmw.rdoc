@@ -1,0 +1,5 @@
+= rmw
+
+Generate this with
+    rmw rdoc
+After you have described your command line interface
