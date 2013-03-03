@@ -40,7 +40,7 @@ desc 'vote lots of times'
 arg_name 'needs a contestant file'
 command :vote_lots do |c|
   c.desc 'times to vote'
-  c.default_value 150
+  c.default_value 400
   c.flag :t, :times_to_vote
 
   c.desc 'anonymized or not'
